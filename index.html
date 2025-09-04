@@ -1,0 +1,1664 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDCAT Practice Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 10px 12px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .test-number {
+            font-size: 10px;
+            margin-top: 3px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 12px;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .input-group {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #333;
+            font-size: 12px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            transition: border 0.3s;
+            padding-left: 30px; /* Space for icon */
+        }
+        
+        .input-group input:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #777;
+        }
+        
+        .btn {
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: block;
+            width: 100%;
+            margin-bottom: 6px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 6px;
+            background: #f1f3f5;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 11px;
+            transition: all 0.3s;
+        }
+        
+        .contact-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+        
+        .question-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-bottom: 10px;
+            justify-content: center;
+        }
+        
+        .question-number {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+        
+        .question-number.current {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border: 1px solid #6a11cb;
+            color: white;
+        }
+        
+        .question-number.answered {
+            background: linear-gradient(to right, #2ed573, #1e90ff);
+            border: 1px solid #2ed573;
+            color: white;
+        }
+        
+        .question-number.visited {
+            background: linear-gradient(to right, #ffa502, #ff4757);
+            border: 1px solid #ffa502;
+            color: white;
+        }
+        
+        .question {
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: #2f3542;
+            line-height: 1.3;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+        
+        .option {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 11px;
+        }
+        
+        .option:hover {
+            border-color: #6a11cb;
+            background: #f8f9fa;
+        }
+        
+        .option.selected {
+            border-color: #6a11cb;
+            background: #e6f7ff;
+        }
+        
+        .option.correct {
+            border-color: #2ed573;
+            background: #d4edda;
+        }
+        
+        .option.incorrect {
+            border-color: #ff4757;
+            background: #f8d7da;
+        }
+        
+        .navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+        
+        .nav-btn {
+            flex: 1 1 48%; /* Allows buttons to wrap on smaller screens */
+            padding: 6px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+        
+        /* New button colors */
+        .btn-back {
+            background: linear-gradient(to right, #4c5a70, #2c3e50);
+            color: white;
+        }
+        
+        .btn-next {
+            background: linear-gradient(to right, #2ed573, #1e90ff);
+            color: white;
+        }
+        
+        .btn-skip {
+            background: linear-gradient(to right, #ffa502, #ff4757);
+            color: white;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .btn-reason {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .nav-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .result-card {
+            background: white;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 10px 0;
+            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+        }
+        
+        .result-header {
+            color: #6a11cb;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        
+        /* New CSS for the student info table */
+        .student-info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 12px;
+            font-size: 11px;
+            text-align: left;
+        }
+        
+        .student-info-table th, .student-info-table td {
+            padding: 6px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .student-info-table th {
+            background: #f1f3f5;
+            font-weight: 600;
+        }
+        
+        .dmc {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            font-size: 11px;
+        }
+        
+        .dmc th {
+            background: #6a11cb;
+            color: white;
+            padding: 6px;
+            text-align: left;
+            font-size: 10px;
+        }
+        
+        .dmc td {
+            padding: 6px;
+            border-bottom: 1px solid #ddd;
+            font-size: 10px;
+        }
+        
+        .dmc tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .score {
+            font-size: 22px;
+            font-weight: 800;
+            color: #6a11cb;
+            margin: 10px 0;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 12px;
+            color: #777;
+            font-size: 10px;
+        }
+        
+        .logo {
+            font-size: 14px;
+            font-weight: 800;
+            color: #6a11cb;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
+        .alert {
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: none;
+            font-size: 11px;
+        }
+        
+        .alert-error {
+            background: #ffeaea;
+            color: #ff4757;
+            border: 1px solid #ff4757;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+            font-size: 12px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .modal-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .quiz-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6a11cb;
+        }
+        
+        .time-display {
+            display: flex;
+            gap: 6px;
+            background: #f1f3f5;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            align-items: center;
+        }
+        
+        .timer-box {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .timer-box span {
+            font-weight: 700;
+            font-size: 10px;
+        }
+        
+        .reasoning-content {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 8px;
+            font-size: 11px;
+            display: none;
+            border-left: 2px solid #6a11cb;
+        }
+        
+        .reasoning-content h4 {
+            margin-bottom: 5px;
+            color: #6a11cb;
+            font-size: 11px;
+        }
+        
+        .service-description {
+            font-size: 11px;
+            text-align: center;
+            margin: 10px 0;
+            color: #555;
+            line-height: 1.4;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .contact-btn-nav {
+            padding: 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: #555;
+        }
+        
+        @media (max-width: 600px) {
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .question-number {
+                width: 14px;
+                height: 14px;
+                font-size: 8px;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+            }
+            
+            .time-display {
+                flex-direction: column;
+                gap: 3px;
+                padding: 3px 6px;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 5px;
+            }
+            .navigation {
+                flex-direction: column;
+            }
+            .nav-btn {
+                flex: 1 1 100%;
+            }
+        }
+        
+        .svg-icon {
+            width: 11px;
+            height: 11px;
+        }
+        
+        .test-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 10px;
+            color: #555;
+        }
+        
+        .login-ui {
+            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .premium-info {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 11px;
+            text-align: center;
+        }
+        
+        .login-description {
+            text-align: center;
+            font-size: 12px;
+            color: #333;
+            margin-bottom: 15px;
+            display: none; /* Hide the description box by default */
+        }
+        
+        .login-card {
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .contact-btn .svg-icon {
+            fill: currentColor;
+            width: 12px;
+            height: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Subject: Biology</h1>
+        </div>
+        
+        <div class="content">
+            <div class="section active" id="signin-section">
+                <div class="login-card">
+                    <div class="logo">PreMium Testing Service</div>
+                    
+                    <div class="alert alert-error" id="login-error">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        Invalid password. Please try again.
+                    </div>
+                    
+                    <div class="input-group">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input type="password" id="password" placeholder="Enter your password">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="checkPassword()">
+                        <svg class="input-icon" style="left: auto; right: 8px; color: white;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path>
+                            <path d="M12 16L16 12L12 8"></path>
+                            <path d="M8 12L16 12"></path>
+                        </svg>
+                        Sign In
+                    </button>
+                    
+                    <div class="contact-buttons">
+                        <a href="https://premium-testing-service.blogspot.com/?m=1" class="contact-btn">
+                            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 10h-1.26a8 8 0 0 0-14.74 0"></path>
+                                <path d="M21.2 16.51A8 8 0 0 0 18 10h1.26a8 8 0 0 0-14.74 0"></path>
+                            </svg>
+                            Blogger Website
+                        </a>
+                        <a href="mailto:hamadahmadbjr551@gmail.com" class="contact-btn">
+                            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            Contact Email
+                        </a>
+                        <a href="tel:03000047325" class="contact-btn">
+                            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3.08c0 1.1-.9 2-2 2-1.1 0-2-.9-2-2v-3.08c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2z"></path>
+                                <path d="M20 16.92c0-1.1-.9-2-2-2h-2.08"></path>
+                                <path d="M16 16.92c0-1.1-.9-2-2-2h-2.08"></path>
+                                <path d="M12 16.92c0-1.1-.9-2-2-2H9.92"></path>
+                                <path d="M8 16.92c0-1.1-.9-2-2-2H4"></path>
+                                <path d="M22 16.92L16.92 22"></path>
+                                <path d="M16.92 22L12 16.92"></path>
+                                <path d="M12 16.92L6.92 22"></path>
+                                <path d="M6.92 22L2 16.92"></path>
+                            </svg>
+                            Contact Number
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="form-section">
+                <h2 style="text-align: center; margin-bottom: 10px; font-size: 14px;">Student Registration</h2>
+                
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name">
+                </div>
+                
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email ending with @gmail.com">
+                </div>
+                
+                <div class="input-group">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" placeholder="+92XXXXXXXXXX">
+                </div>
+                
+                <button class="btn btn-primary" onclick="validateForm()">Proceed to Test</button>
+            </div>
+            
+            <div class="section" id="quiz-section">
+                <div class="quiz-header">
+                    <div class="quiz-title">Test No: PreMium-001BIO</div>
+                    <div class="time-display">
+                        <div class="timer-box">
+                            Total Time Left: <span id="total-timer">10:00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-info">
+                    <a href="https://premium-testing-service.blogspot.com/?m=1" class="contact-btn-nav">Website</a>
+                    <a href="mailto:hamadahmadbjr551@gmail.com" class="contact-btn-nav">Email</a>
+                    <a href="tel:03000047325" class="contact-btn-nav">Phone</a>
+                </div>
+                
+                <div class="question-menu" id="question-menu">
+                    </div>
+                
+                <div class="question" id="question-text">
+                    </div>
+                
+                <div class="options" id="options-container">
+                    </div>
+                
+                <div class="reasoning-content" id="reasoning-content">
+                    <h4>Reasoning:</h4>
+                    <p id="reasoning-text"></p>
+                </div>
+                
+                <div class="navigation">
+                    <button class="nav-btn btn-back" onclick="navigate('prev')">Back</button>
+                    <button class="nav-btn btn-next" onclick="navigate('next')">Next</button>
+                    <button class="nav-btn btn-skip" onclick="navigate('skip')">Skip</button>
+                    <button class="nav-btn btn-reason" onclick="toggleReasoning()">Reasoning</button>
+                    <button class="nav-btn btn-submit" onclick="showSubmitModal()">Submit</button>
+                </div>
+            </div>
+            
+            <div class="section" id="result-section">
+                <div class="header" style="padding: 12px; background: none; color: #333; text-align: left;">
+                    <div class="contact-info">
+                        <a href="https://premium-testing-service.blogspot.com/?m=1" class="contact-btn-nav" style="background: linear-gradient(to right, #2ed573, #1e90ff);">Website</a>
+                        <a href="mailto:hamadahmadbjr551@gmail.com" class="contact-btn-nav" style="background: linear-gradient(to right, #e74c3c, #c0392b);">Email</a>
+                        <a href="tel:03000047325" class="contact-btn-nav" style="background: linear-gradient(to right, #ffa502, #ff4757);">Phone</a>
+                    </div>
+                </div>
+                
+                <h2 style="text-align: center; margin-bottom: 10px; font-size: 14px;">Test Results</h2>
+                
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3>MDCAT Practice Test</h3>
+                        <p>Test No: PreMium-001BIO</p>
+                    </div>
+                    
+                    <table class="student-info-table">
+                        <thead>
+                            <tr>
+                                <th>Detail</th>
+                                <th>Information</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-info-table-body">
+                        </tbody>
+                    </table>
+
+                    <div class="score" id="score">0/10</div>
+                    
+                    <table class="dmc">
+                        <thead>
+                            <tr>
+                                <th>Topic</th>
+                                <th>Total</th>
+                                <th>Correct</th>
+                                <th>Incorrect</th>
+                                <th>Score %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Human Physiology</td>
+                                <td>32</td>
+                                <td id="topic1-correct">0</td>
+                                <td id="topic1-incorrect">0</td>
+                                <td id="topic1-score">0%</td>
+                            </tr>
+                            <tr>
+                                <td>Cell Biology</td>
+                                <td>6</td>
+                                <td id="topic2-correct">0</td>
+                                <td id="topic2-incorrect">0</td>
+                                <td id="topic2-score">0%</td>
+                            </tr>
+                            <tr>
+                                <td>Genetics</td>
+                                <td>4</td>
+                                <td id="topic3-correct">0</td>
+                                <td id="topic3-incorrect">0</td>
+                                <td id="topic3-score">0%</td>
+                            </tr>
+                             <tr>
+                                <td>Virology</td>
+                                <td>10</td>
+                                <td id="topic4-correct">0</td>
+                                <td id="topic4-incorrect">0</td>
+                                <td id="topic4-score">0%</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: #e6f7ff;">
+                                <td>Total</td>
+                                <td>52</td>
+                                <td id="total-correct">0</td>
+                                <td id="total-incorrect">0</td>
+                                <td id="total-score">0%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <button class="btn btn-primary" onclick="showRetakeModal()" style="margin-top: 12px;">Retake Test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="submit-modal">
+        <div class="modal-content">
+            <h3>Submit Test</h3>
+            <p>Are you sure you want to submit your test? You won't be able to change answers after submission.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-secondary" onclick="hideModal('submit-modal')">Cancel</button>
+                <button class="modal-btn btn-primary" onclick="submitTest()">Submit</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="retake-modal">
+        <div class="modal-content">
+            <h3>Retake Test</h3>
+            <p>Are you sure you want to retake the test? This will reset your current progress.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-secondary" onclick="hideModal('retake-modal')">Cancel</button>
+                <button class="modal-btn btn-primary" onclick="restartTest()">Retake</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Quiz questions with reasoning
+        const questions = [
+            {
+                question: "A marine cartilaginous fish and a freshwater bony fish are compared. Despite the marine fish living in a hypertonic environment, it likely invests energy to convert nitrogenous waste to urea primarily to:",
+                options: ["Reduce the solubility of its waste products.", "Conserve water by reducing the osmotic loss required for excretion.", "Increase the toxicity of its waste for defensive purposes.", "Match the excretory product of its freshwater prey."],
+                correct: 1,
+                reasoning: "The text states that ureotelic animals convert ammonia to urea to conserve water, as urea requires 10 times less water to dilute to non-toxic levels than ammonia does. This osmoregulatory strategy is crucial for organisms with limited water availability, including marine chondrichthyans.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "Which part of the nephron is primarily responsible for establishing the high medullary osmotic gradient essential for forming concentrated urine, a function highlighted as its critical role?",
+                options: ["Proximal Convoluted Tubule", "Glomerulus", "Distal Convoluted Tubule", "Loop of Henle"],
+                correct: 3,
+                reasoning: "The text explicitly states that the loop of Henle allows the kidneys to maintain the correct water balance and that the juxtamedullary nephrons with long loops are responsible for the osmotic gradients in the medulla.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "A patient's urine is persistently acidic. A urologist hypothesizes the patient's kidney stones are composed of uric acid. This hypothesis is based on the principle that:",
+                options: ["Acidic urine dissolves calcium phosphate stones.", "Uric acid precipitates more readily in an acidic environment.", "Alkaline urine promotes the formation of all stone types.", "The pH of urine is regulated by the glomerulus."],
+                correct: 1,
+                reasoning: "The \"Skills: Initiating and Planning\" section directly correlates persistently acidic urine with uric acid type stones, indicating uric acid's solubility is pH-dependent.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "In a kidney transplant, a donor with blood type O is considered a 'universal donor.' This is because:",
+                options: ["Their kidneys lack HLA antigens.", "Their blood type antigens will not react with any recipient's antibodies.", "Type O blood is compatible with all other ABO groups.", "They are the only donors suitable for juxtamedullary nephron function."],
+                correct: 2,
+                reasoning: "The text lists ABO blood group compatibility as the first essential principle for a transplant. Type O blood lacks A and B antigens, so it will not provoke an antibody response in recipients of any blood type.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The vasa recta are described as running 'antiparallel' to the loops of Henle. This anatomical arrangement is crucial for:",
+                options: ["Maximizing the efficiency of ultrafiltration.", "Preventing the washout of the medullary osmotic gradient.", "Delivering oxygen directly to the renal corpuscle.", "Facilitating the rapid removal of glucose from the filtrate."],
+                correct: 1,
+                reasoning: "The countercurrent exchange mechanism in the vasa recta (running parallel but in opposite direction to the loops) is designed to maintain the osmotic gradient established by the loop of Henle, not to dissipate it.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "Non-shivering thermogenesis, a long-term response to cold, is primarily mediated by which hormone?",
+                options: ["Insulin", "Adrenaline (short-term)", "Aldosterone", "Thyroxin"],
+                correct: 3,
+                reasoning: "The text clearly distinguishes between adrenaline (short-term increase in metabolic activity) and thyroxin, which increases metabolic rate for long-term heat production.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "A person is stranded in a desert. The physiological response that will have the most significant impact on reducing water loss is:",
+                options: ["Vasodilation to increase radiative heat loss.", "Pilocrection to trap an insulating air layer.", "Secretion of ADH to make concentrated urine.", "Shivering to generate metabolic heat."],
+                correct: 2,
+                reasoning: "The text states the kidneys' osmoregulatory function is to form concentrated urine during dehydration. ADH acts on the collecting ducts to reabsorb water, directly conserving it, which is the most critical response in a desert scenario.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "Pyrogens directly cause fever by:",
+                options: ["Acting on the skin's thermoreceptors to induce vasoconstriction.", "Damaging the hypothalamus's vascular supply.", "Increasing the thermal set point in the hypothalamus.", "Stimulating uncontrolled muscular activity (shivering)."],
+                correct: 2,
+                reasoning: "The text states that pyrogens 'directly affect the hypothalamus and increase the temperature set point,' which is the definition of how a fever is initiated.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The higher position of the left kidney compared to the right is best explained by the anatomical presence of the:",
+                options: ["Dorsal aorta", "Liver", "Spleen", "Inferior vena cava"],
+                correct: 1,
+                reasoning: "The text explicitly states: 'the right kidney being a little lower than the left one because of a liver lobe above it.'",
+                topic: "Human Physiology"
+            },
+            {
+                question: "In the proximal convoluted tubule, the presence of microvilli forming a 'brush border' is a structural adaptation that directly facilitates:",
+                options: ["Withstanding high hydrostatic pressure.", "Increasing the surface area for reabsorption.", "Filtering large protein molecules.", "Secreting hydrogen ions."],
+                correct: 1,
+                reasoning: "The text directly states that the microvilli in the PCT 'increase surface area for reabsorption.'",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The primary function of the juxtamedullary nephrons, with their long loops of Henle, becomes most critical under conditions of:",
+                options: ["Water flooding", "Hypertension", "Water shortage", "Hyperglycemia"],
+                correct: 2,
+                reasoning: "The text states: 'When water is in short supply, increased water retention occurs through juxtamedullary nephrons.'",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The process of tubular secretion in the nephron is primarily responsible for:",
+                options: ["Reclaiming all essential nutrients from the filtrate.", "Eliminating excess water from the body.", "Adding specific substances like H+ and K+ to the filtrate for excretion.", "Generating the osmotic pressure for filtration."],
+                correct: 2,
+                reasoning: "The text defines tubular secretion as the process where substances like ammonium and hydrogen ions are secreted into the tubule lumen to maintain pH and eliminate wastes.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The condition 'nephrolithiasis' refers to:",
+                options: ["Inflammation of the kidney's glomeruli.", "The presence of stones within the kidney or urinary tract.", "The failure of the kidney to produce urine.", "A bacterial infection of the renal pelvis."],
+                correct: 1,
+                reasoning: "The text explicitly defines nephrolithiasis as 'the condition of having stones in the kidney.'",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The initial step in urine formation, where fluid is forced from the glomerulus into Bowman's capsule due to hydrostatic pressure, is correctly termed:",
+                options: ["Tubular Secretion", "Selective Reabsorption", "Ultrafiltration", "Osmosis"],
+                correct: 2,
+                reasoning: "The text clearly identifies the first step as 'Ultrafiltration (pressure filtration)' occurring in the renal corpuscle.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "A key reason why urinary tract infections (UTIs) are significantly more common in women than in men is due to the:",
+                options: ["Higher body temperature in women.", "Shorter length of the female urethra.", "Higher glucose concentration in female urine.", "Difference in kidney structure between genders."],
+                correct: 1,
+                reasoning: "The text directly states the higher risk in women is 'mostly due to the shortness of the female urethra,' which is 1.5 inches compared to 8 inches in men, allowing easier bacterial entry.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "A researcher isolates a compound from a cellular membrane that is integral to its structure and is amphipathic. Hydrolysis of this compound yields glycerol, two fatty acids, phosphoric acid, and serine. This compound is most accurately classified as a:",
+                options: ["Triacylglycerol", "Sphingolipid", "Phospholipid", "Terpenoid"],
+                correct: 2,
+                reasoning: "The description matches a phospholipid (specifically phosphatidylserine). Phospholipids are amphipathic, are key membrane components, and are composed of glycerol, two fatty acids, a phosphate group, and often a nitrogenous base like serine. Triacylglycerols lack a phosphate and serine, sphingolipids use sphingosine instead of glycerol, and terpenoids are built from isoprene units.",
+                topic: "Cell Biology"
+            },
+            {
+                question: "In an experiment, a sample of nucleic acid is analyzed. It is found to be single-stranded, contain uracil, and have regions of intra-strand complementary base pairing giving it partial double-helical character. This molecule is most likely functioning as:",
+                options: ["A long-term information storage molecule in the nucleus", "A structural component of the ribosome's large subunit", "A template for protein synthesis that has been transcribed from DNA", "The primary genetic material in a newly discovered virus"],
+                correct: 2,
+                reasoning: "The description (single-stranded, contains uracil, can fold into secondary structures) is characteristic of RNA, specifically mRNA, tRNA, or rRNA. Its function as a \"template for protein synthesis\" is the primary role of messenger RNA (mRNA).",
+                topic: "Genetics"
+            },
+            {
+                question: "Chargaff's analysis of a double-stranded DNA molecule from an unknown organism reveals that 22% of its bases are Guanine. What is the expected percentage of Thymine?",
+                options: ["22%", "28%", "44%", "56%"],
+                correct: 1,
+                reasoning: "According to Chargaff's rules, G = C and A = T. If G is 22%, then C is also 22%, totaling 44%. The remaining 56% must be A + T. Therefore, Thymine (T) alone is half of that, which is 28%.",
+                topic: "Genetics"
+            },
+            {
+                question: "A genetic disorder is characterized by a defective chloride ion channel protein, leading to abnormally viscous mucus in the lungs. The most promising *in vivo* therapeutic approach to introduce a functional gene directly into the patient's airway epithelial cells would likely utilize:",
+                options: ["Harvested bone marrow stem cells infected ex vivo with a retroviral vector", "A plasmid-coated balloon catheter inserted during angioplasty", "A solution of liposomes coated with the correct gene, delivered via aerosol", "Somatic cell hybridization to produce monoclonal antibodies"],
+                correct: 2,
+                reasoning: "This describes Cystic Fibrosis. The *in vivo* method described involves using liposomes (non-viral vectors) to deliver the correct CFTR gene directly into the patient's lungs via an aerosol spray, as mentioned in the biotechnology text.",
+                topic: "Genetics"
+            },
+            {
+                question: "The observation that in a DNA double helix, adenine exclusively pairs with thymine via two hydrogen bonds, while guanine pairs with cytosine via three, is most directly responsible for:",
+                options: ["The antiparallel orientation of the two polynucleotide strands", "The constant diameter of the DNA molecule along its length", "The semiconservative nature of DNA replication", "The ability of the helix to be coiled and supercoiled"],
+                correct: 1,
+                reasoning: "The specific complementary base pairing (A-T and G-C) ensures a uniform spatial arrangement between the two sugar-phosphate backbones. A purine (A or G, double-ring) always pairs with a pyrimidine (T or C, single-ring), maintaining a constant width for the helix.",
+                topic: "Genetics"
+            },
+            {
+                question: "A protein's function is abolished because a valine residue has been substituted for a glutamic acid residue in its primary structure. This is most directly a consequence of a change in the:",
+                options: ["Number of disulfide bridges", "Sequence of amino acids", "Folding pattern into an alpha-helix", "Aggregation of multiple polypeptide chains"],
+                correct: 1,
+                reasoning: "The primary structure is defined as the linear sequence of amino acids. A change in a single amino acid (e.g., valine for glutamic acid) is a change in the primary structure, which can disrupt higher-order structures and function, as seen in sickle cell hemoglobin.",
+                topic: "Cell Biology"
+            },
+            {
+                question: "In the context of producing a therapeutic protein, why might a transgenic goat engineered for 'gene pharming' be considered a more efficient bioreactor than a culture of transgenic bacteria?",
+                options: ["Goats can produce the protein in their urine, which is easier to collect than milk.", "Eukaryotic goats are more likely to correctly fold and modify complex human proteins than prokaryotic bacteria.", "Goat cells contain a nucleus, which allows for higher rates of transcription.", "Bacterial bioreactors cannot be scaled up to industrial production levels."],
+                correct: 1,
+                reasoning: "Many human proteins require post-translational modifications (e.g., glycosylation) for proper function. Eukaryotic systems (like goat cells) possess the cellular machinery to perform these modifications, whereas prokaryotic bacteria like *E. coli* do not.",
+                topic: "Cell Biology"
+            },
+            {
+                question: "The therapeutic strategy for Severe Combined Immunodeficiency (SCID) involving removing a patient's bone marrow stem cells, infecting them with a retrovirus carrying a normal ADA gene, and reintroducing them is a prime example of:",
+                options: ["*In vivo* gene therapy using a viral vector", "*Ex vivo* gene therapy using a non-viral vector", "*In vivo* gene therapy using a non-viral vector", "*Ex vivo* gene therapy using a viral vector"],
+                correct: 3,
+                reasoning: "The cells are modified *outside* the body (*ex vivo*) and the vector used is a genetically altered retrovirus, which is a viral vector.",
+                topic: "Genetics"
+            },
+            {
+                question: "The high specific heat capacity of water is a property primarily attributed to:",
+                options: ["Its polarity allowing it to act as a universal solvent", "The extensive hydrogen bonding between its molecules", "Its low molecular weight and high kinetic energy", "Its ionization into H+ and OH- ions"],
+                correct: 1,
+                reasoning: "Water's high specific heat is due to the significant amount of energy required to break the numerous hydrogen bonds between water molecules before the heat can increase the water's kinetic energy (temperature).",
+                topic: "Cell Biology"
+            },
+            {
+                question: "A probe used in molecular diagnostics is best defined as a:",
+                options: ["Monoclonal antibody that binds to a specific antigen on a pathogen", "Fluorescently labeled fragment of DNA complementary to a target sequence", "Retroviral vector used to deliver a therapeutic gene to a target cell", "Hybridoma cell that secretes identical antibodies for serological tests"],
+                correct: 1,
+                reasoning: "As per the biotechnology text, a DNA/RNA probe is a labeled fragment of DNA or RNA used to detect the presence of complementary nucleotide sequences in a sample.",
+                topic: "Genetics"
+            },
+            {
+                question: "The fundamental premise that 'all cells arise from pre-existing cells,' as stated by Rudolph Virchow, was most crucially supported by the experimental work of:",
+                options: ["Watson and Crick demonstrating the double-helical structure of DNA", "Louis Pasteur disproving the theory of spontaneous generation", "Erwin Chargaff establishing base-pairing ratios in DNA", "Wilkins and Franklin using X-ray diffraction on DNA crystals"],
+                correct: 1,
+                reasoning: "Pasteur's experiments provided the critical experimental proof that microorganisms (and by extension, all cells) could only arise from other living microorganisms, directly supporting Virchow's hypothesis \"omnis cellula e cellula.\"",
+                topic: "Cell Biology"
+            },
+            {
+                question: "The primary factor limiting the resolution of a light microscope, which was overcome by the development of the electron microscope, is the:",
+                options: ["Magnification power of the objective lenses", "Wavelength of the source of illumination", "Ability to stain cellular components for contrast", "Thickness of the specimen being observed"],
+                correct: 1,
+                reasoning: "Resolution is limited by the wavelength of light used for illumination. Electron microscopes use a beam of electrons with a much shorter wavelength than visible light, allowing for vastly improved resolution.",
+                topic: "Cell Biology"
+            },
+            {
+                question: "In a nucleoside, the covalent bond between the pentose sugar and the nitrogenous base is known as a:",
+                options: ["Phosphodiester bond", "Peptide bond", "Glycosidic bond", "Ester linkage"],
+                correct: 2,
+                reasoning: "A nucleoside consists of a nitrogenous base attached to a pentose sugar via a **glycosidic bond**. A nucleotide is formed when a phosphate group is attached to the sugar via a phosphodiester bond.",
+                topic: "Cell Biology"
+            },
+            {
+                question: "The technique of somatic cell hybridization, which fuses myeloma cells with antibody-producing spleen cells, is essential for the production of:",
+                options: ["Recombinant DNA", "Transgenic animals", "Monoclonal antibodies", "DNA probes"],
+                correct: 2,
+                reasoning: "The text explicitly states that somatic cell hybridization is the technique used to fuse myeloma cells (for immortality) with spleen cells (for antibody production) to create hybridomas that produce monoclonal antibodies.",
+                topic: "Genetics"
+            },
+            {
+                question: "A researcher needs to separate cellular organelles based on their size and density for biochemical analysis. The most appropriate technique to achieve this is:",
+                options: ["X-ray diffraction", "Cell fractionation using centrifugation", "Somatic cell hybridization", "Polymerase chain reaction (PCR)"],
+                correct: 1,
+                reasoning: "Cell fractionation, specifically density gradient centrifugation, is the technique described in the text for homogenizing tissue and separating cellular components based on their size, weight, and density.",
+                topic: "Cell Biology"
+            },
+            {
+                question: "The quaternary structure of a protein, such as hemoglobin, is primarily stabilized by:",
+                options: ["Peptide bonds between adjacent amino acids", "Hydrogen bonds forming alpha-helices or beta-pleated sheets", "Interactions such as hydrophobic bonds and hydrogen bonds between multiple polypeptide chains", "The linear sequence of amino acids in each polypeptide subunit"],
+                correct: 2,
+                reasoning: "Quaternary structure refers to the association of multiple folded polypeptide chains (subunits). These subunits are held together by non-covalent interactions like hydrophobic interactions, hydrogen bonds, and ionic bonds, not by the primary covalent peptide bonds.",
+                topic: "Cell Biology"
+            },
+            {
+                question: "The observation that germ cells (sperm/ova) contain half the amount of DNA found in somatic cells (e.g., liver cells) is a direct biochemical correlate of:",
+                options: ["The process of transcription", "The Central Dogma of molecular biology", "The haploid nature of gametes following meiosis", "Chargaff's rules of base equivalence"],
+                correct: 2,
+                reasoning: "Meiosis reduces the chromosome number by half, resulting in gametes that are haploid (1n). Since DNA is stored in chromosomes, haploid cells naturally contain half the DNA of diploid somatic cells (2n).",
+                topic: "Genetics"
+            },
+            {
+                question: "The primary advantage of using a liposome over a genetically modified virus as a vector in *in vivo* gene therapy is that liposomes:",
+                options: ["Can carry larger genes into the target cells", "Are capable of much more efficient and stable integration into the host genome", "Can be targeted to a wider range of specific cell types", "Typically elicit a lesser immune response from the host"],
+                correct: 3,
+                reasoning: "Viral vectors, while efficient, can trigger a potent immune response. Liposomes, being artificial lipid spheres, are generally less immunogenic, which is a significant advantage for *in vivo* therapies.",
+                topic: "Genetics"
+            },
+            {
+                question: "The fundamental chemical difference between a nucleotide found in RNA and one found in DNA is:",
+                options: ["The structure of the nitrogenous base", "The presence of a phosphate group", "The type of pentose sugar", "The formation of a glycosidic bond"],
+                correct: 2,
+                reasoning: "RNA nucleotides contain **ribose** sugar, while DNA nucleotides contain **deoxyribose** sugar (which has one less oxygen atom on the 2' carbon). Both can use A, G, C, but RNA uses Uracil (U) instead of Thymine (T).",
+                topic: "Genetics"
+            },
+            {
+                question: "The initial step in the formation of a peptide bond between two amino acids involves a reaction between:",
+                options: ["The R-group of one amino acid and the amino group of another", "The carboxyl group of one amino acid and the amino group of another", "Two carboxyl groups, releasing carbon dioxide", "Two amino groups, releasing ammonia"],
+                correct: 1,
+                reasoning: "A peptide bond is a covalent bond formed by a dehydration synthesis reaction between the **carboxyl group (-COOH)** of one amino acid and the **amino group (-NH₂)** of another, releasing a molecule of water (H₂O).",
+                topic: "Cell Biology"
+            },
+            {
+                question: "A molecule that functions similarly to pulmonary surfactant by reducing surface tension would most likely be characterized as a:",
+                options: ["Proteolytic enzyme", "Lipoprotein", "Glycoprotein", "Nucleic acid"],
+                correct: 1,
+                reasoning: "The text defines the surfactant lining the alveoli as 'a film of lipoprotein.' Therefore, any molecule mimicking its primary function of lowering surface tension would share this fundamental biochemical characteristic.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "Which graph best represents the relationship between the partial pressure of CO₂ in tissues and the formation of carbaminohaemoglobin?",
+                options: ["A negative linear correlation", "A positive linear correlation", "A sigmoidal (S-shaped) curve", "A parabolic curve"],
+                correct: 1,
+                reasoning: "The text states the reaction where CO₂ binds to haemoglobin to form carbaminohaemoglobin 'depends upon the partial pressure of CO₂' and formation occurs when 'PCO₂ is higher in the tissues than blood.' This describes a direct, positive relationship, which is best represented by a linear correlation, unlike the sigmoidal curve of the oxygen-haemoglobin dissociation relationship.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "A sharp object pierces the thoracic cavity, equalizing the intrapleural pressure with atmospheric pressure. The immediate effect on the affected lung will be:",
+                options: ["Forced expiration due to muscle contraction", "Collapse due to loss of pressure gradient", "Inflation due to air rushing in", "No change due to lung elasticity"],
+                correct: 1,
+                reasoning: "The mechanism of breathing is described as a 'suction–pump mechanism.' The lungs expand because a partial vacuum (negative pressure) is created in the pleural cavity. If this pressure is equalized with the atmosphere, the driving force for lung inflation is lost, and the lung's natural elasticity will cause it to recoil and collapse.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "During strenuous exercise, the expiratory centre in the medulla oblongata would most directly stimulate:",
+                options: ["Diaphragm contraction", "External intercostal relaxation", "Abdominal muscle contraction", "Phrenic nerve inhibition"],
+                correct: 2,
+                reasoning: "The text states that during normal breathing, expiration is passive. However, 'in severe muscular exercise... expiration also becomes active' and is driven by the expiratory centre, which 'sends impulses to the abdominal and other accessory muscles' to force air out.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The high oxygen demand of a metabolically active tissue is met primarily through a mechanism reflected by:",
+                options: ["A leftward shift of the oxygen dissociation curve", "A decreased partial pressure gradient for oxygen", "A steeper partial pressure gradient for oxygen", "An increased affinity of haemoglobin for oxygen"],
+                correct: 2,
+                reasoning: "The text explains that highly active tissues rapidly use oxygen, lowering their PO₂ to as low as 20 mmHg. This creates a very large difference (a steep gradient) from the capillary PO₂ of 100 mmHg. Diffusion rates are directly proportional to the concentration (or partial pressure) gradient, ensuring more oxygen is unloaded where it is most needed.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "What is the primary biochemical reason carbon monoxide (CO) is lethal at low concentrations?",
+                options: ["It catalyzes the breakdown of haemoglobin", "It binds haemoglobin with an affinity 249 times greater than oxygen", "It directly inhibits the respiratory centre in the medulla", "It forms a stable complex with plasma proteins"],
+                correct: 1,
+                reasoning: "The text on CO poisoning explicitly states this fact. This extremely high affinity means CO outcompetes O₂ for binding sites on haemoglobin (Hb), forming carboxyhaemoglobin, which cannot carry oxygen, leading to tissue hypoxia.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The property of myoglobin that makes it an effective oxygen reserve in resting muscle is its:",
+                options: ["Presence in red blood cells", "Ability to bind four oxygen molecules", "High affinity for oxygen, releasing it only at very low PO₂", "Low affinity for oxygen, releasing it readily"],
+                correct: 2,
+                reasoning: "The text states \"Myoglobin releases oxygen when the partial pressure of oxygen is below 20 mmHg.\" This very high affinity means it holds onto oxygen tightly, only releasing it when oxyhaemoglobin (which unloads at a higher PO₂) has been exhausted and local oxygen levels are critically low.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The rhythmic nerve impulses that initiate involuntary breathing originate in the medulla and are transmitted to the diaphragm via the:",
+                options: ["Intercostal nerves", "Vagus nerve", "Phrenic nerve", "Sciatic nerve"],
+                correct: 2,
+                reasoning: "The text explicitly states: \"The breathing centre communicates with... the diaphragm by the phrenic nerves.\" This is a specific anatomical detail crucial for the mechanism of breathing.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "A pathology that causes a drastic reduction in the production of the enzyme carbonic anhydrase would most severely impact:",
+                options: ["The binding of oxygen to haemoglobin in the lungs", "The conversion of CO₂ to bicarbonate ions in the blood", "The movement of the diaphragm during inspiration", "The ciliary action in the trachea"],
+                correct: 1,
+                reasoning: "The text repeatedly highlights the role of \"enzyme carbonic anhydrase\" in catalyzing the reversible reaction between CO₂ and H₂O to form H₂CO₃, which is the crucial first step for transporting approximately 70% of CO₂ as bicarbonate ions. Without this enzyme, this primary transport mechanism would be drastically slowed.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The structural feature that prevents the trachea and bronchi from collapsing during the pressure changes of breathing is the:",
+                options: ["Ciliated mucous membrane", "Layer of smooth muscle", "C-shaped and plate-like cartilages", "Elastic connective tissue"],
+                correct: 2,
+                reasoning: "The text describes the tracheal wall as being \"stiffened by 16 to 20 characteristic horse shoe shape incomplete rings\" and the bronchi as having \"small cartilaginous plates.\" These cartilaginous structures provide rigid support to keep the airways patent (open).",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The movement of air into and out of the lungs is ultimately driven by:",
+                options: ["Contraction of the lungs themselves", "Active pumping by the heart", "The creation of pressure gradients between the atmosphere and alveoli", "Osmotic differences across the respiratory membrane"],
+                correct: 2,
+                reasoning: "The core mechanism described is that muscle movements change thoracic volume, which changes alveolar pressure. Air moves from high to low pressure: into the lungs when alveolar pressure < atmospheric pressure, and out when alveolar pressure > atmospheric pressure. The lungs are passive in this process.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "If the partial pressure of oxygen (PO₂) in the alveoli dropped significantly below normal, the most immediate compensatory mechanism would be:",
+                options: ["An increase in heart rate", "A decrease in tidal volume", "Stimulation of the inspiratory centre to increase ventilation rate", "A shift of the oxygen-haemoglobin curve to the right"],
+                correct: 2,
+                reasoning: "While chemoreceptors do respond to O₂, the text notes its influence is 'relatively minor' compared to CO₂ under normal circumstances. However, a 'significant' drop (e.g., at high altitude) would stimulate the breathing centre in the medulla to increase the rate and depth of breathing (ventilation) to bring in more air and attempt to raise alveolar PO₂.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The property of the respiratory membrane that maximizes the rate of gas diffusion is its:",
+                options: ["Moist and permeable nature", "Extensive surface area and minimal thickness", "Good vascular supply and ventilation", "All of the above"],
+                correct: 3,
+                reasoning: "The text lists all these (moist/permeable, thin, large surface area, good blood supply, good ventilation) as essential properties of an effective respiratory surface for diffusion. They are all integral to Fick's law of diffusion.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The primary function of the mucus and cilia in the upper respiratory tract is to:",
+                options: ["Warm the inhaled air", "Facilitate gas exchange", "Trap and remove particulate matter", "Produce sound"],
+                correct: 2,
+                reasoning: "The text is clear: 'The mucus and cilia filter the air and prevent the microorganisms, dust and particulate matter inside the respiratory system.' This is a defense mechanism, not directly involved in the other listed functions.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "A person voluntarily holds their breath until losing consciousness. Breathing resumes automatically because:",
+                options: ["The cerebral cortex sends a new signal", "The limbic system overrides the voluntary control", "The PO₂ drops to a level that directly stimulates the medullary breathing centre", "The heart stops, triggering a reflex"],
+                correct: 2,
+                reasoning: "The text states that people can hold their breath until blood PO₂ declines to a level low enough to cause unconsciousness. 'After consciousness is lost, the respiratory centre resumes its normal function in automatically controlling respiration.' This indicates that the involuntary, autonomic control in the medulla is stimulated by the critical chemical change (low O₂, high CO₂) and overrides the lost voluntary command.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "During the conversion of CO₂ to bicarbonate ions, the hydrogen ions (H⁺) produced are primarily buffered by:",
+                options: ["Plasma proteins", "Bicarbonate ions in the plasma", "Haemoglobin inside erythrocytes", "Chloride ions during the chloride shift"],
+                correct: 2,
+                reasoning: "The text explicitly states: 'Accumulation of H⁺ ions increases acidity... This does not occur since haemoglobin buffers the hydrogen formed.' It then shows the chemical equation where H⁺ associates with oxyhaemoglobin. This is a key role of haemoglobin as a buffer.",
+                topic: "Human Physiology"
+            },
+            {
+                question: "The parameter that represents the maximum volume of air that can be exhaled after a maximal inspiration is the:",
+                options: ["Tidal Volume", "Inspiratory Reserve Volume", "Vital Capacity (sum of TV, IRV, ERV)", "Total Lung Capacity (includes Residual Volume)"],
+                correct: 2,
+                reasoning: "While not explicitly named \"Vital Capacity\" in the provided text snippets, the definitions are given. Vital Capacity is the sum of Tidal Volume (500ml) + Inspiratory Reserve Volume (3000ml) + Expiratory Reserve Volume (1200ml). It is the total movable air volume. Total Lung Capacity includes the air that cannot be exhaled (Residual Volume).",
+                topic: "Human Physiology"
+            },
+             {
+                question: "A researcher is attempting to classify a newly discovered virus. It has a polyhedral capsid and infects E. coli bacteria. Based on its structure and host, which classification is most accurate?",
+                options: ["Animal virus", "Plant virus", "Bacteriophage", "Retrovirus"],
+                correct: 2,
+                reasoning: "The question specifies a polyhedral capsid (a structural feature) and a bacterial host (E. coli). Bacteriophages are viruses that specifically infect bacteria, and many have polyhedral heads.",
+                topic: "Virology"
+            },
+            {
+                question: "The initial evidence for the existence of viruses, demonstrated by Iwanowsky and Chamberland, was their ability to:",
+                options: ["Be crystallized like a chemical compound.", "Reproduce on artificial nutrient media.", "Pass through filters that retain bacteria.", "Be visible under a light microscope."],
+                correct: 2,
+                reasoning: "The text states that the first evidence came from the fact that the causative agent of diseases like tobacco mosaic could pass through a porcelain filter, which would normally trap bacteria.",
+                topic: "Virology"
+            },
+            {
+                question: "W.M. Stanley's experiment with purified Tobacco Mosaic Virus (TMV) was pivotal because it demonstrated that:",
+                options: ["Viruses can be destroyed by ultraviolet light.", "Crystalline, non-living particles could cause infection and reproduce.", "All viruses contain double-stranded DNA.", "Viruses are capable of independent metabolism."],
+                correct: 1,
+                reasoning: "Stanley crystallized TMV (treating it as non-living) but showed that these crystals could infect plants and reproduce, sparking the debate on whether viruses are living or dead.",
+                topic: "Virology"
+            },
+            {
+                question: "A patient's immune system is severely compromised. Which of the following diseases would MOST likely be an 'opportunistic invasion' as defined in the text?",
+                options: ["A common cold caused by a rhinovirus in a healthy adult.", "Pulmonary tuberculosis in an HIV-positive individual.", "Measles in an unvaccinated child.", "Food poisoning from Salmonella in a group of people."],
+                correct: 1,
+                reasoning: "Opportunistic infections take advantage of a weakened immune system. The text lists Pulmonary Tuberculosis as an example of such an infection that thrives when the body's defenses, like those destroyed by HIV, are down.",
+                topic: "Virology"
+            },
+            {
+                question: "The glycoprotein spikes (gp120 and gp41) on the envelope of the Human Immunodeficiency Virus (HIV) are primarily essential for:",
+                options: ["Reverse transcription of viral RNA into DNA.", "Assembly and budding of new virions from the host cell.", "Attachment and fusion with the host cell membrane.", "Integration of viral DNA into the host chromosome."],
+                correct: 2,
+                reasoning: "The text explicitly states that 'gp 120 is needed to attach to the host cell, and gp41 is critical for the cell fusion process.'",
+                topic: "Virology"
+            },
+            {
+                question: "Highly Active Antiretroviral Therapy (HAART) is effective because it:",
+                options: ["Acts as a vaccine, preventing initial HIV infection.", "Selectively destroys infected CD4 T cells.", "Uses a combination of drugs to suppress viral replication.", "Cures HIV infection by eradicating the provirus from host DNA."],
+                correct: 2,
+                reasoning: "The text explains that HAART is a combination of three or more anti-HIV medications that slow the progression of the infection and suppress the virus, though it is not a cure.",
+                topic: "Virology"
+            },
+            {
+                question: "The enzyme reverse transcriptase is a key feature of HIV. Its primary function is to:",
+                options: ["Translate viral mRNA into protein within the host cytoplasm.", "Integrate viral DNA into the host cell's genome.", "Convert the single-stranded RNA genome of the virus into DNA.", "Cleave large viral proteins into functional subunits during maturation."],
+                correct: 2,
+                reasoning: "The text defines reverse transcriptase as the enzyme 'used to convert viral RNA genome into viral DNA genome.' This is the defining action of a retrovirus.",
+                topic: "Virology"
+            },
+            {
+                question: "Once integrated into the host cell's DNA, the viral genetic material is referred to as a:",
+                options: ["Virion", "Capsid", "Provirus", "cDNA"],
+                correct: 2,
+                reasoning: "The life cycle description states: 'The double stranded cDNA then integrates into the host cell DNA... The integrated DNA is now called provirus.'",
+                topic: "Virology"
+            },
+            {
+                question: "Which characteristic of viruses is most cited as evidence for their non-living nature?",
+                options: ["They can undergo mutations.", "They can be crystallized and stored inertly.", "They are obligate intracellular parasites.", "They contain genetic material (DNA or RNA)."],
+                correct: 1,
+                reasoning: "The ability to be crystallized and stored in a bottle like a chemical is listed under the 'nonliving characteristics of viruses,' highlighting their inert state outside a host.",
+                topic: "Virology"
+            },
+            {
+                question: "The significant decrease in helper T cells (CD4 cells) during an HIV infection directly leads to immunodeficiency because these cells:",
+                options: ["Are the primary producers of antibodies.", "Directly destroy infected and cancerous cells.", "Recognize antigens and activate other immune cells.", "Phagocytose and digest foreign invaders."],
+                correct: 2,
+                reasoning: "The text explains that helper T cells 'recognize the antigen and activate the killer T cells.' Their destruction cripples the coordination of the entire adaptive immune response.",
+                topic: "Virology"
+            },
+            {
+                question: "The 'matrix protein' in the structure of HIV is located:",
+                options: ["Within the viral core, surrounding the RNA.", "Forming the spikes on the viral envelope.", "Between the envelope and the capsid.", "Integrated within the host cell's chromosome."],
+                correct: 2,
+                reasoning: "The structural description clearly states: 'Beneath envelope another protein shell is present which is made up of matrix proteins. It lies between the envelope and capsid.'",
+                topic: "Virology"
+            },
+            {
+                question: "A patient is in the 'asymptomatic carrier' stage of HIV infection. What is a defining feature of this stage?",
+                options: ["The presence of several opportunistic infections.", "A negative result on a standard HIV antibody test.", "High infectiousness despite a lack of symptoms.", "A severe and rapid loss of CD4 T cells."],
+                correct: 2,
+                reasoning: "The text states that during the asymptomatic stage, 'although the individual exhibit no symptoms during this stage, he or she is highly infectious.'",
+                topic: "Virology"
+            },
+            {
+                question: "The primary reason it is difficult to develop a vaccine against the common cold is that:",
+                options: ["The cold virus has a complex helical capsid structure.", "It is caused by a retrovirus that integrates into host DNA.", "There are many different viral strains that can cause the illness.", "The virus is too small to be detected by the immune system."],
+                correct: 2,
+                reasoning: "The text on cold viruses mentions they are caused by 'more than 200 viral strains,' making it impossible to produce a single vaccine that is effective against all of them.",
+                topic: "Virology"
+            },
+            {
+                question: "Which of the following is an example of an obligate intracellular parasite?",
+                options: ["Bacterium", "Fungus", "Virus", "Protozoan"],
+                correct: 2,
+                reasoning: "The text on viruses defines them as 'obligate intracellular parasites' because they can only replicate inside a host cell.",
+                topic: "Virology"
+            },
+            {
+                question: "Which of the following describes the lytic cycle of a bacteriophage?",
+                options: ["The viral genome integrates into the host's DNA and remains dormant.", "The virus uses the host's machinery to replicate and then lyses the host cell to release new virions.", "The virus buds from the host cell, taking a piece of the host membrane with it.", "The virus replicates in the cytoplasm without integrating into the host's DNA."],
+                correct: 1,
+                reasoning: "The lytic cycle description states: 'The virus immediately takes over the cell and starts producing the new viruses. This process ends with the lysis of the host cell and the release of new virions.'",
+                topic: "Virology"
+            },
+            {
+                question: "The primary difference between a lysogenic virus and a lytic virus is that a lysogenic virus:",
+                options: ["Infects only eukaryotic cells.", "Has an RNA genome instead of a DNA genome.", "Forms a provirus by integrating its genome into the host's chromosome.", "Replicates in the host cytoplasm without altering the host's DNA."],
+                correct: 2,
+                reasoning: "The text on the lysogenic cycle explicitly states: 'The viral DNA becomes integrated in the host DNA and becomes a provirus... The viral genome is replicated with each round of cell division.'",
+                topic: "Virology"
+            },
+            {
+                question: "Which of the following viruses would be most suitable for use as a vector in gene therapy, given its ability to integrate its genome into the host's DNA for long-term gene expression?",
+                options: ["A bacteriophage in the lytic cycle", "A retrovirus", "A plant virus", "A virus with a helical capsid"],
+                correct: 1,
+                reasoning: "Retroviruses, like HIV, are known to integrate their genetic material into the host's genome (forming a provirus), which is a desirable trait for long-term gene expression in gene therapy.",
+                topic: "Virology"
+            },
+            {
+                question: "What is a key difference between the life cycle of HIV and the lytic cycle of a bacteriophage?",
+                options: ["HIV uses a DNA intermediate, whereas a bacteriophage does not.", "HIV buds from the host cell, whereas a bacteriophage lyses the host cell.", "HIV has a capsid, whereas a bacteriophage does not.", "HIV has a linear genome, whereas a bacteriophage has a circular genome."],
+                correct: 1,
+                reasoning: "The HIV life cycle involves the virus budding from the host cell membrane, taking part of the membrane as its envelope. In contrast, a lytic bacteriophage causes the host cell to burst (lyse) to release new virions.",
+                topic: "Virology"
+            },
+            {
+                question: "What is the function of the enzyme integrase in the life cycle of HIV?",
+                options: ["To convert viral RNA to viral DNA.", "To assemble new virions.", "To splice the viral DNA into the host's DNA.", "To cleave polyproteins into smaller functional proteins."],
+                correct: 2,
+                reasoning: "The text on HIV enzymes states that integrase is responsible for 'splicing the viral DNA into the host cell DNA,' a critical step for forming the provirus.",
+                topic: "Virology"
+            },
+            {
+                question: "The primary function of the enzyme protease in the HIV life cycle is to:",
+                options: ["Reverse transcribe viral RNA.", "Integrate viral DNA into the host genome.", "Cleave viral polyproteins into functional proteins.", "Assist in the assembly of the viral capsid."],
+                correct: 2,
+                reasoning: "The text on HIV's enzymes states: 'Protease is needed to cleave the polyproteins into their functional proteins.' This step is crucial for the maturation of new viral particles.",
+                topic: "Virology"
+            }
+        ];
+        
+        // Quiz state variables
+        let currentQuestion = 0;
+        let userAnswers = Array(questions.length).fill(null);
+        let visitedQuestions = Array(questions.length).fill(false);
+        let totalTimeLeft;
+        let timerInterval;
+
+        // Topic mapping for DMC
+        const topics = {
+            "Human Physiology": { total: 0, correct: 0, incorrect: 0 },
+            "Cell Biology": { total: 0, correct: 0, incorrect: 0 },
+            "Genetics": { total: 0, correct: 0, incorrect: 0 },
+            "Virology": { total: 0, correct: 0, incorrect: 0 },
+        };
+        
+        // Count total questions for each topic
+        questions.forEach(q => {
+            if (topics[q.topic]) {
+                topics[q.topic].total++;
+            }
+        });
+
+        const topicKeys = Object.keys(topics);
+
+        // Utility functions to show/hide sections
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(id).classList.add('active');
+        }
+        
+        function showModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function hideModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        
+        // Check password and proceed
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            if (password === 'PreMium001Bio') {
+                document.getElementById('login-error').style.display = 'none';
+                showSection('form-section');
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+        
+        // Validate form and start quiz
+        function validateForm() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            
+            if (name && email && mobile) {
+                // Set initial time
+                totalTimeLeft = questions.length * 60;
+                startTimer();
+                
+                // Show quiz section
+                showSection('quiz-section');
+                
+                // Load first question
+                loadQuestion(0);
+                
+                // Update student info on result page
+                document.getElementById('student-info-table-body').innerHTML = `
+                    <tr>
+                        <td>Name</td>
+                        <td>${name}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>${email}</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile</td>
+                        <td>${mobile}</td>
+                    </tr>
+                `;
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+        
+        // Start the quiz timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                totalTimeLeft--;
+                if (totalTimeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest();
+                }
+                const minutes = Math.floor(totalTimeLeft / 60);
+                const seconds = totalTimeLeft % 60;
+                document.getElementById('total-timer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }, 1000);
+        }
+        
+        // Load a specific question
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            // Mark the current question as visited
+            visitedQuestions[currentQuestion] = true;
+            
+            // Update current question index
+            currentQuestion = index;
+            
+            const questionData = questions[currentQuestion];
+            document.getElementById('question-text').textContent = `${currentQuestion + 1}. ${questionData.question}`;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            questionData.options.forEach((option, i) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('option');
+                optionDiv.textContent = `${String.fromCharCode(65 + i)}) ${option}`;
+                optionDiv.onclick = () => selectOption(i);
+                
+                if (userAnswers[currentQuestion] === i) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Hide reasoning by default
+            document.getElementById('reasoning-content').style.display = 'none';
+            
+            // Update question menu
+            updateQuestionMenu();
+        }
+        
+        // Select an option
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestion] = optionIndex;
+            loadQuestion(currentQuestion); // Reload to show selection
+        }
+        
+        // Navigation buttons
+        function navigate(direction) {
+            let nextIndex = currentQuestion;
+            if (direction === 'next' && currentQuestion < questions.length - 1) {
+                nextIndex++;
+            } else if (direction === 'prev' && currentQuestion > 0) {
+                nextIndex--;
+            } else if (direction === 'skip' && currentQuestion < questions.length - 1) {
+                nextIndex++;
+            } else {
+                return;
+            }
+            loadQuestion(nextIndex);
+        }
+        
+        // Update the question number menu
+        function updateQuestionMenu() {
+            const menu = document.getElementById('question-menu');
+            menu.innerHTML = '';
+            questions.forEach((q, i) => {
+                const numberDiv = document.createElement('div');
+                numberDiv.classList.add('question-number');
+                numberDiv.textContent = i + 1;
+                numberDiv.onclick = () => loadQuestion(i);
+                
+                if (i === currentQuestion) {
+                    numberDiv.classList.add('current');
+                } else if (userAnswers[i] !== null) {
+                    numberDiv.classList.add('answered');
+                } else if (visitedQuestions[i]) {
+                    numberDiv.classList.add('visited');
+                }
+                
+                menu.appendChild(numberDiv);
+            });
+        }
+        
+        // Show submit confirmation modal
+        function showSubmitModal() {
+            showModal('submit-modal');
+        }
+        
+        // Show retake confirmation modal
+        function showRetakeModal() {
+            showModal('retake-modal');
+        }
+        
+        // Toggle reasoning display
+        function toggleReasoning() {
+            const reasoningContainer = document.getElementById('reasoning-content');
+            const reasoningText = document.getElementById('reasoning-text');
+            const questionData = questions[currentQuestion];
+            
+            if (reasoningContainer.style.display === 'block') {
+                reasoningContainer.style.display = 'none';
+            } else {
+                reasoningText.textContent = questionData.reasoning;
+                reasoningContainer.style.display = 'block';
+            }
+        }
+        
+        // Submit the test and show results
+        function submitTest() {
+            clearInterval(timerInterval);
+            let correctCount = 0;
+            let totalCorrect = 0;
+            let totalIncorrect = 0;
+            
+            // Reset topic counts
+            topicKeys.forEach(topic => {
+                topics[topic].correct = 0;
+                topics[topic].incorrect = 0;
+            });
+            
+            // Grade the quiz and update topic counts
+            questions.forEach((q, i) => {
+                const isCorrect = userAnswers[i] === q.correct;
+                if (isCorrect) {
+                    correctCount++;
+                    if (topics[q.topic]) topics[q.topic].correct++;
+                } else {
+                    if (topics[q.topic]) topics[q.topic].incorrect++;
+                }
+            });
+            
+            // Calculate totals
+            totalCorrect = correctCount;
+            totalIncorrect = questions.length - totalCorrect;
+            
+            document.getElementById('score').textContent = `${totalCorrect}/${questions.length}`;
+            
+            // Update DMC table
+            document.getElementById('topic1-correct').textContent = topics[topicKeys[0]].correct;
+            document.getElementById('topic1-incorrect').textContent = topics[topicKeys[0]].incorrect;
+            document.getElementById('topic1-score').textContent = `${((topics[topicKeys[0]].correct / topics[topicKeys[0]].total) * 100).toFixed(0)}%`;
+            
+            document.getElementById('topic2-correct').textContent = topics[topicKeys[1]].correct;
+            document.getElementById('topic2-incorrect').textContent = topics[topicKeys[1]].incorrect;
+            document.getElementById('topic2-score').textContent = `${((topics[topicKeys[1]].correct / topics[topicKeys[1]].total) * 100).toFixed(0)}%`;
+            
+            document.getElementById('topic3-correct').textContent = topics[topicKeys[2]].correct;
+            document.getElementById('topic3-incorrect').textContent = topics[topicKeys[2]].incorrect;
+            document.getElementById('topic3-score').textContent = `${((topics[topicKeys[2]].correct / topics[topicKeys[2]].total) * 100).toFixed(0)}%`;
+            
+            document.getElementById('topic4-correct').textContent = topics[topicKeys[3]].correct;
+            document.getElementById('topic4-incorrect').textContent = topics[topicKeys[3]].incorrect;
+            document.getElementById('topic4-score').textContent = `${((topics[topicKeys[3]].correct / topics[topicKeys[3]].total) * 100).toFixed(0)}%`;
+            
+            document.getElementById('total-correct').textContent = totalCorrect;
+            document.getElementById('total-incorrect').textContent = totalIncorrect;
+            document.getElementById('total-score').textContent = `${((totalCorrect / questions.length) * 100).toFixed(0)}%`;
+            
+            // Show result section
+            showSection('result-section');
+            hideModal('submit-modal');
+        }
+        
+        // Format time spent on test
+        function formatTimeSpent() {
+            const totalSeconds = questions.length * 60 - totalTimeLeft;
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes}m ${seconds}s`;
+        }
+        
+        // Restart the test
+        function restartTest() {
+            // Reset answers and navigation
+            userAnswers = Array(questions.length).fill(null);
+            visitedQuestions = Array(questions.length).fill(false);
+            currentQuestion = 0;
+            totalTimeLeft = questions.length * 60;
+            
+            // Go to first question
+            loadQuestion(0);
+            startTimer();
+            
+            // Show quiz section
+            showSection('quiz-section');
+            hideModal('retake-modal');
+        }
+        
+        // Simulate form fill for developer bypass
+        function simulateFormFill() {
+            document.getElementById('name').value = 'Developer User';
+            document.getElementById('email').value = 'developer@gmail.com';
+            document.getElementById('mobile').value = '+923000047325';
+        }
+        
+        // Initialize on page load
+        window.onload = function() {
+            // Any additional initialization if needed
+        };
+    </script>
+</body>
+</html><script>function myFunction() {
+  alert("Button Clicked")
+}</script>
